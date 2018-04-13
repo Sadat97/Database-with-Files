@@ -13,17 +13,24 @@ class Books
         ~Books();
         void AddBook();
         void ReadBook();
-        void DeleteBook(char ID []);
         void sortPIndex();
-        int IndexBinarySearch(char[]);
+        int PIndexBinarySearch(char[]);
         void constructPIndex();
         void savePIndex();
         void LoadIndex();
         bool exists(char [20]);
         void ReadPIndex();
+        void constructSIndex();
+        int SIndexBinarySearch(char[]);
+        void sortSIndex();
+        void saveSIndex();
 
     private:
-        int next;
+        char datafile [50] = "Books.txt";
+        char Pindexfile [50] = "BooksPIndex.txt";
+        char Sindexfile [50] = "BooksSIndex.txt";
+
+        int next,snext;
         const int MaxBuffS = 200;
         struct Book
         {
@@ -39,6 +46,14 @@ class Books
         };
         const static int indexSize = 100;
         PIndex index[indexSize];
+
+        struct SIndex
+        {
+            char SK[30];
+            char PK [13];
+
+        };
+        SIndex sindex[indexSize];
 
 
 

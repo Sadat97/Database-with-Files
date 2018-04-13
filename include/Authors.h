@@ -22,6 +22,10 @@ class Authors
         void ReadPIndex();
 
     private:
+        char datafile [50] = "Authors.txt";
+        char Pindexfile [50] = "AuthorsPIndex.txt";
+        char Sindexfile [50] = "AuthorsSIndex.txt";
+
         int next;
         const int MaxBuffS = 200;
         struct Author

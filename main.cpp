@@ -2,8 +2,8 @@
 #include <fstream>
 #include <cstring>
 #include <strstream>
-#include "include/Books.h"
-#include "include/Authors.h"
+#include "Books.h"
+#include "Authors.h"
 
 
 
@@ -34,7 +34,7 @@ int main()
         {
             case 1: cin.ignore();Bobj.AddBook();break;
             case 2: cin.ignore();Aobj.AddAuthor();break;
-            case 3: cin.ignore();cout << Bobj.IndexBinarySearch(test);
+            case 3: cin.ignore();cout << Bobj.PIndexBinarySearch(test);
         }
 
         cout<<"Enter Your Choice\n(1) Add New Book\n(2) Add New Author\n(3) Delete Book(ID)\n(4) Delete Author(ID)\n"
