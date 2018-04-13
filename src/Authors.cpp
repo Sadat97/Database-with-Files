@@ -1,4 +1,6 @@
-#include "Authors.h"
+//#include "Authors.h"
+
+#include "../include/Authors.h"
 
 Authors::Authors()
 {
@@ -6,7 +8,7 @@ Authors::Authors()
 
 void Authors:: AddAuthor()
 {
-    ofstream AOfile ("Authors.txt",ios::app);
+    ofstream AOfile ("./Authors.txt",ios::app);
     Author A;
     cout << "\nThe ID of the Author: ";
 	cin.getline(A.Author_ID, 29);
@@ -43,7 +45,7 @@ void Authors:: AddAuthor()
 
 void Authors:: ReadAuthor()
 {
-    ifstream AIfile("Authors.txt");
+    ifstream AIfile("./Authors.txt");
     Author A;
     AIfile.seekg(0,ios::beg);
     while (!AIfile.eof())
@@ -109,7 +111,7 @@ int Authors:: IndexBinarySearch(char key[])
 
 void Authors::constructPIndex()
 {
-    ifstream fin("Authors.txt");  		next = 0;
+    ifstream fin("./Authors.txt");  		next = 0;
     while(!fin.eof())
         {
             PIndex temp;
@@ -136,7 +138,7 @@ void Authors::constructPIndex()
 
 void Authors::savePIndex()
 {
-    ofstream fout("AuthorsPIndex.txt", ios::trunc);
+    ofstream fout("./AuthorsPIndex.txt", ios::trunc);
     for (int i = 0; i<next; i++)
     {
         PIndex temp = index[i];
@@ -147,7 +149,7 @@ void Authors::savePIndex()
 
 void Authors::ReadPIndex()
 {
-    ifstream fin("AuthorsPIndex.txt");
+    ifstream fin("./AuthorsPIndex.txt");
     while (!fin.eof())
     {
         PIndex temp;
@@ -162,7 +164,7 @@ void Authors::ReadPIndex()
 
 void Authors::LoadIndex()
 {
-    if(!exists("Authors.txt"))
+    if(!exists("./Authors.txt"))
     {
         next = 0;
     }
