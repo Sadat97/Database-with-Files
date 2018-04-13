@@ -10,7 +10,8 @@ Books::Books()
 
 void Books:: AddBook()
 {
-    ofstream BOfile("./Books.txt",ios::app);
+    ofstream BOfile("../Books.txt",ios::app);
+    cout << BOfile.good();
     Book B;
     cout << "\nThe ID of the Book: ";
     cin.getline(B.Book_ID, 12);
@@ -47,7 +48,7 @@ void Books:: AddBook()
 
 void Books:: ReadBook()
 {
-    ifstream BIfile("./Books.txt",ios::app);
+    ifstream BIfile("../Books.txt",ios::app);
     Book b;
     BIfile.seekg(0,ios::beg);
     while(!BIfile.eof())
@@ -98,9 +99,10 @@ int Books:: IndexBinarySearch(char key[])
     int low = 0, high = size - 1;
     while (low <= high)
     {
+
     int middle = (low + high) / 2;
     if (strcmp(index[middle].PK, key) == 0)
-        return middle;
+        return index[middle].offset;
     else if (atoi(index[middle].PK)<atoi(key))
         low = middle + 1;
     else
@@ -111,7 +113,7 @@ int Books:: IndexBinarySearch(char key[])
 
 void Books::constructPIndex()
 {
-    ifstream fin("./Books.txt");  		next = 0;
+    ifstream fin("../Books.txt");  		next = 0;
     while(!fin.eof())
         {
             PIndex temp;
@@ -138,7 +140,7 @@ void Books::constructPIndex()
 
 void Books::savePIndex()
 {
-    ofstream fout("./BooksPIndex.txt", ios::trunc);
+    ofstream fout("../BooksPIndex.txt", ios::trunc);
     for (int i = 0; i<next; i++)
     {
         PIndex temp = index[i];
@@ -149,7 +151,7 @@ void Books::savePIndex()
 
 void Books::LoadIndex()
 {
-    if(!exists("./Books.txt"))
+    if(!exists("../Books.txt"))
     {
         next = 0;
     }
@@ -173,7 +175,7 @@ bool Books ::exists(char file [20])
 
 void Books::ReadPIndex()
 {
-    ifstream fin("./BooksPIndex.txt");
+    ifstream fin("../BooksPIndex.txt");
     while (!fin.eof())
     {
         PIndex temp;
@@ -184,6 +186,21 @@ void Books::ReadPIndex()
     }
     fin.close();
 }
+
+// Deletion and Destructors Section ::
+
+void Books::DeleteBook(char ID[]) {
+   int offset =  IndexBinarySearch(ID);
+
+    if (offset != -1) {
+
+    } else {
+        cout << "this Book is not avaible in the list!";
+    }
+
+
+}
+
 
 Books::~Books()
 {
