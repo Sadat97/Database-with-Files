@@ -12,6 +12,7 @@ class Authors
         Authors();
         ~Authors();
         void AddAuthor();
+        void DeleteAuthor(char ID[]);
         void ReadAuthor();
         void sortPIndex();
         int IndexBinarySearch(char[]);
@@ -22,6 +23,7 @@ class Authors
         void ReadPIndex();
 
     private:
+        string authorFilePath = "../Authors.txt";
         int next;
         const int MaxBuffS = 200;
         struct Author

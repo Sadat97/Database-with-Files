@@ -190,15 +190,17 @@ void Books::ReadPIndex()
 // Deletion and Destructors Section ::
 
 void Books::DeleteBook(char ID[]) {
-   int offset =  IndexBinarySearch(ID);
+    int offset =  IndexBinarySearch(ID);
+    fstream file (bookFilePath,ios::in | ios::out);
 
     if (offset != -1) {
+        file.seekp(offset + 2 , ios::beg);
+        file << '*' ;
 
     } else {
         cout << "this Book is not avaible in the list!";
     }
-
-
+    file.close();
 }
 
 

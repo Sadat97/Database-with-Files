@@ -21,8 +21,8 @@ int main()
     Bobj.LoadIndex();
     Aobj.LoadIndex();
 
-    //Test Char obj
-    char test[7] = "123456";
+    //ID Char for Searching
+    char ID[30];
 
     cout<<"Enter Your Choice\n(1) Add New Book\n(2) Add New Author\n(3) Delete Book(ID)\n(4) Delete Author(ID)\n"
         <<"(5) Print Book(ID)\n(6) Print Book(Author_ID)\n(7) Print Author (ID)\n(8) Print Author (Author_Name)\n"
@@ -34,7 +34,8 @@ int main()
         {
             case 1: cin.ignore();Bobj.AddBook();break;
             case 2: cin.ignore();Aobj.AddAuthor();break;
-            case 3: cin.ignore();cout << Bobj.IndexBinarySearch(test);
+            case 3: cin.ignore();cout<<"Please Enter the ID \n";cin>>ID;Bobj.DeleteBook(ID);break;
+            case 4: cin.ignore();cout<<"Please Enter the ID \n";cin>>ID;Aobj.DeleteAuthor(ID);break;
         }
 
         cout<<"Enter Your Choice\n(1) Add New Book\n(2) Add New Author\n(3) Delete Book(ID)\n(4) Delete Author(ID)\n"

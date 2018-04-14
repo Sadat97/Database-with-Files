@@ -100,7 +100,7 @@ int Authors:: IndexBinarySearch(char key[])
     {
     int middle = (low + high) / 2;
     if (strcmp(index[middle].PK, key) == 0)
-        return middle;
+        return index[middle].offset;
     else if (atoi(index[middle].PK)<atoi(key))
         low = middle + 1;
     else
@@ -185,6 +185,25 @@ bool Authors ::exists(char file [20])
         return true;
     }
 }
+
+
+void Authors::DeleteAuthor(char ID[]) {
+    int offset =  IndexBinarySearch(ID);
+//    cout << endl << offset;
+    fstream file (authorFilePath,ios::in | ios::out);
+
+    if (offset != -1) {
+        file.seekp(offset + 2, ios::beg);
+        file << '*' ;
+
+    } else {
+        cout << "this Book is not avaible in the list!";
+    }
+    file.close();
+}
+
+
+
 
 
 Authors::~Authors()

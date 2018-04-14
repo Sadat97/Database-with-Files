@@ -22,7 +22,9 @@ class Books
         bool exists(char [20]);
         void ReadPIndex();
 
+
     private:
+        string bookFilePath = "../Books.txt";
         int next;
         const int MaxBuffS = 200;
         struct Book
