@@ -21,3 +21,29 @@
 1523638409 source:c:\users\amr_x\desktop\20160172_20160195_g#7\src\books.cpp
 	"Books.h"
 
+1523656439 source:c:\users\amr_x\desktop\new folder\database-with-files\main.cpp
+	<iostream>
+	<fstream>
+	<cstring>
+	<strstream>
+	"C:\Users\amr_x\Desktop\New folder\Database-with-Files\include\Books.h"
+	"C:\Users\amr_x\Desktop\New folder\Database-with-Files\include\Authors.h"
+	"../Books.h"
+	"Authors.h"
+
+1523655128 c:\users\amr_x\desktop\new folder\database-with-files\include\books.h
+	<bits/stdc++.h>
+	<strstream>
+
+1523656130 c:\users\amr_x\desktop\new folder\database-with-files\include\authors.h
+	<bits/stdc++.h>
+	<strstream>
+
+1523655128 source:c:\users\amr_x\desktop\new folder\database-with-files\include\books.h
+	<bits/stdc++.h>
+	<strstream>
+
+1523656130 source:c:\users\amr_x\desktop\new folder\database-with-files\include\authors.h
+	<bits/stdc++.h>
+	<strstream>
+

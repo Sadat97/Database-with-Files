@@ -5,12 +5,6 @@
 #include "Books.h"
 #include "Authors.h"
 
-
-
-/* to work on codeblocks enable this
-#include "../Books.h"
-#include "Authors.h"
-*/
 using namespace std;
 
 int main()
@@ -20,9 +14,6 @@ int main()
     int choice;
     Bobj.LoadIndex();
     Aobj.LoadIndex();
-
-    //Test Char obj
-    char test[7] = "123456";
 
     cout<<"Enter Your Choice\n(1) Add New Book\n(2) Add New Author\n(3) Delete Book(ID)\n(4) Delete Author(ID)\n"
         <<"(5) Print Book(ID)\n(6) Print Book(Author_ID)\n(7) Print Author (ID)\n(8) Print Author (Author_Name)\n"
@@ -34,7 +25,6 @@ int main()
         {
             case 1: cin.ignore();Bobj.AddBook();break;
             case 2: cin.ignore();Aobj.AddAuthor();break;
-            case 3: cin.ignore();cout << Bobj.PIndexBinarySearch(test);
         }
 
         cout<<"Enter Your Choice\n(1) Add New Book\n(2) Add New Author\n(3) Delete Book(ID)\n(4) Delete Author(ID)\n"
@@ -48,7 +38,9 @@ int main()
     Bobj.ReadBook();
 
     Bobj.savePIndex();
+    Bobj.saveSIndex();
     Aobj.savePIndex();
+    Aobj.saveSIndex();
 
     cout<<"\nAuthor Index Data:\n";
     Aobj.ReadPIndex();

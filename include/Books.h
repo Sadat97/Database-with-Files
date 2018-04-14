@@ -18,7 +18,7 @@ class Books
         void constructPIndex();
         void savePIndex();
         void LoadIndex();
-        bool exists(char [20]);
+        bool exists(char []);
         void ReadPIndex();
         void constructSIndex();
         int SIndexBinarySearch(char[]);
@@ -26,9 +26,10 @@ class Books
         void saveSIndex();
 
     private:
-        char datafile [50] = "Books.txt";
-        char Pindexfile [50] = "BooksPIndex.txt";
-        char Sindexfile [50] = "BooksSIndex.txt";
+//        char datafile [];
+//        char Pindexfile [];
+//        char Sindexfile [];
+//        char LabelIDList [];
 
         int next,snext;
         const int MaxBuffS = 200;
@@ -54,9 +55,6 @@ class Books
 
         };
         SIndex sindex[indexSize];
-
-
-
 
 };
 

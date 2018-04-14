@@ -2,12 +2,16 @@
 #include <vector>
 Books::Books()
 {
+//    char datafile [50]="Books.txt";
+//    char Pindexfile [50]="BooksPIndex.txt";
+//    char Sindexfile [50]="BooksSIndex.txt";
+//    char LabelIDList [50]="BooksList.txt";
 }
 
 
 void Books:: AddBook()
 {
-    ofstream BOfile(datafile,ios::app);
+    ofstream BOfile("Books.txt",ios::app);
     Book B;
     cout << "\nThe ID of the Book: ";
     cin.getline(B.Book_ID, 12);
@@ -41,7 +45,7 @@ void Books:: AddBook()
     SIndex Stemp;
     strcpy(Stemp.SK,B.Author_ID);
     strcpy(Stemp.PK,B.Book_ID);
-    sindex[next] = Stemp;
+    sindex[snext] = Stemp;
     snext++;
     sortSIndex();
 
@@ -51,7 +55,7 @@ void Books:: AddBook()
 
 void Books:: ReadBook()
 {
-    ifstream BIfile(datafile,ios::app);
+    ifstream BIfile("Books.txt",ios::app);
     Book b;
     BIfile.seekg(0,ios::beg);
     while(!BIfile.eof())
@@ -150,7 +154,7 @@ int Books:: SIndexBinarySearch(char key[])
 
 void Books::constructPIndex()
 {
-    ifstream fin(datafile);  		next = 0;
+    ifstream fin("Books.txt");  		next = 0;
     while(!fin.eof())
         {
             PIndex temp;
@@ -177,7 +181,7 @@ void Books::constructPIndex()
 
 void Books::constructSIndex()
 {
-    ifstream fin(datafile);  		snext = 0;
+    ifstream fin("Books.txt");  		snext = 0;
     while(!fin.eof())
         {
             SIndex temp;
@@ -194,18 +198,17 @@ void Books::constructSIndex()
             istringstream strbuf(buffer);
             strbuf.getline(temp.PK,12, '|');
             strbuf.getline(temp.SK,29, '|');
-            sindex[next] = temp;
-            next++;
+            sindex[snext] = temp;
+            snext++;
         }
         fin.close();
-        sortPIndex();
+        sortSIndex();
 }
-
 
 
 void Books::savePIndex()
 {
-    ofstream fout(Pindexfile, ios::trunc);
+    ofstream fout("BooksPIndex.txt", ios::trunc);
     for (int i = 0; i<next; i++)
     {
         PIndex temp = index[i];
@@ -214,34 +217,64 @@ void Books::savePIndex()
     fout.close();
 }
 
-/**
+
 void Books::saveSIndex()
 {
-    ofstream fout(Sindexfile, ios::trunc);
-    ofstream out("BooksLabelIDList.txt", ios::trunc);
+    ofstream sout("BooksSIndex.txt", ios::trunc);
+    ofstream lout("BooksList.txt", ios::trunc);
+
+
+    vector<string>SKT;
     vector<string>PKT;
-    for (int i = 0; i<snext; i++)
-        S.push(sindex[i].PK);
-    vector<int>I;
-    vector<int>T;
-    for (int i = 0; i<snext; i++)
-            T.push(0);
+    //vector<int>Sptr;
+    vector<int>Lptr;
 
-    for (int i = 0; i<snext; i++)
+    for (int i=0;i<snext;i++)
     {
-        for (int j=i+1; j<snext;j++)
+        if (strcmp(sindex[i].SK,sindex[i+1].SK) == 0)
         {
-            if (sindex[i].SK == sindex[j].SK)
-                T[i] = j;
-
-            SIndex temp = sindex[i];
-            out.write(temp.PK, sizeof(temp.PK))
-            fout.write(temp.SK, sizeof(temp.SK));
+            SKT.push_back(sindex[i].SK);
+            while(strcmp(sindex[i].SK,sindex[i+1].SK) == 0)
+            {
+                i++;
+            }
         }
+        else
+            SKT.push_back(sindex[i].SK);
     }
-    fout.close();
+
+    for (int i=0;i<snext;i++)
+    {
+        if (strcmp(sindex[i].SK,sindex[i+1].SK) == 0)
+        {
+            while (strcmp(sindex[i].SK,sindex[i+1].SK) == 0)
+            {
+                PKT.push_back(sindex[i].PK);
+                Lptr.push_back(i+1);
+                i++;
+            }
+            PKT.push_back(sindex[i].PK);
+            Lptr.push_back(-1);
+        }
+        else
+        {
+            PKT.push_back(sindex[i].PK);
+            Lptr.push_back(-1);
+
+        }
+
+    }
+
+    for (int i=0;i<SKT.size();i++)
+        sout<<SKT[i]<<" "<<i<<endl;
+    for (int i=0;i<PKT.size();i++)
+        lout<<PKT[i]<<" "<<Lptr[i]<<endl;
+
+
+    lout.close();
+    sout.close();
 }
-**/
+
 
 void Books::LoadIndex()
 {
@@ -250,7 +283,6 @@ void Books::LoadIndex()
         next = 0;
         snext = 0;
     }
-
     else
     {
         constructPIndex();
@@ -259,7 +291,7 @@ void Books::LoadIndex()
 }
 
 
-bool Books :: exists(char file [20])
+bool Books :: exists(char file [50])
 {
     ifstream f(file);
     if (f.fail())

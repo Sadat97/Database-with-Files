@@ -1,0 +1,24 @@
+# depslib dependency file v1.0
+1523715693 source:c:\users\amr_x\desktop\20160172-20160195-g#7\main.cpp
+	<iostream>
+	<fstream>
+	<cstring>
+	<strstream>
+	"Books.h"
+	"Authors.h"
+
+1523721086 c:\users\amr_x\desktop\20160172-20160195-g#7\include\books.h
+	<bits/stdc++.h>
+	<strstream>
+
+1523721166 c:\users\amr_x\desktop\20160172-20160195-g#7\include\authors.h
+	<bits/stdc++.h>
+	<strstream>
+
+1523721178 source:c:\users\amr_x\desktop\20160172-20160195-g#7\src\authors.cpp
+	"Authors.h"
+
+1523720653 source:c:\users\amr_x\desktop\20160172-20160195-g#7\src\books.cpp
+	"Books.h"
+	<vector>
+

@@ -14,19 +14,19 @@ class Authors
         void AddAuthor();
         void ReadAuthor();
         void sortPIndex();
-        int IndexBinarySearch(char[]);
+        int PIndexBinarySearch(char[]);
         void constructPIndex();
         void savePIndex();
         void LoadIndex();
-        bool exists(char [20]);
+        bool exists(char []);
         void ReadPIndex();
+        void constructSIndex();
+        int SIndexBinarySearch(char[]);
+        void sortSIndex();
+        void saveSIndex();
 
     private:
-        char datafile [50] = "Authors.txt";
-        char Pindexfile [50] = "AuthorsPIndex.txt";
-        char Sindexfile [50] = "AuthorsSIndex.txt";
-
-        int next;
+        int next,snext;
         const int MaxBuffS = 200;
         struct Author
         {
@@ -43,6 +43,13 @@ class Authors
         const static int indexSize = 100;
         PIndex index[indexSize];
 
+        struct SIndex
+        {
+            char SK[50];
+            char PK [30];
+
+        };
+        SIndex sindex[indexSize];
 
 };
 
