@@ -12,6 +12,7 @@ class Authors
         Authors();
         ~Authors();
         void AddAuthor();
+        void DeleteAuthor(char[]);
         void ReadAuthor();
         void sortPIndex();
         int PIndexBinarySearch(char[]);

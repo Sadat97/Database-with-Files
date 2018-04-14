@@ -47,3 +47,18 @@
 	<bits/stdc++.h>
 	<strstream>
 
+1523735586 source:m:\files\files -a2\database-with-files\main.cpp
+	<iostream>
+	<fstream>
+	<cstring>
+	<strstream>
+	"Books.h"
+	"Authors.h"
+
+1523735489 source:m:\files\files -a2\database-with-files\src\authors.cpp
+	"Authors.h"
+
+1523735331 source:m:\files\files -a2\database-with-files\src\books.cpp
+	"Books.h"
+	<vector>
+

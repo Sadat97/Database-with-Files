@@ -12,6 +12,7 @@ class Books
         Books();
         ~Books();
         void AddBook();
+        void DeleteBook(char ID []);
         void ReadBook();
         void sortPIndex();
         int PIndexBinarySearch(char[]);

@@ -123,7 +123,7 @@ int Authors:: PIndexBinarySearch(char key[])
     {
     int middle = (low + high) / 2;
     if (strcmp(index[middle].PK, key) == 0)
-        return middle;
+        return index[middle].offset;
     else if (atoi(index[middle].PK)<atoi(key))
         low = middle + 1;
     else
@@ -320,6 +320,23 @@ bool Authors ::exists(char file [20])
         f.close();
         return true;
     }
+}
+
+
+void Authors::DeleteAuthor(char ID []){
+    int offset = PIndexBinarySearch(ID);
+    if (offset != -1){
+      fstream bookFile ("Authors.txt",ios::in | ios::out);
+      bookFile.seekp(offset +2,ios::beg);
+      bookFile << "*";
+      bookFile.close();
+      LoadIndex();
+
+    } else {
+        cout << "This Author is not Available ! \n";
+    }
+
+
 }
 
 

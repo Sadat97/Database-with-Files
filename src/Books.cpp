@@ -125,7 +125,7 @@ int Books:: PIndexBinarySearch(char key[])
     {
     int middle = (low + high) / 2;
     if (strcmp(index[middle].PK, key) == 0)
-        return middle;
+        return index[middle].offset;
     else if (atoi(index[middle].PK)<atoi(key))
         low = middle + 1;
     else
@@ -316,6 +316,22 @@ void Books::ReadPIndex()
         cout<<temp.PK<<"  "<<temp.offset<<endl;
     }
     fin.close();
+}
+
+void Books::DeleteBook(char ID []){
+    int offset = PIndexBinarySearch(ID);
+    if (offset != -1){
+      fstream bookFile ("Books.txt",ios::in | ios::out);
+      bookFile.seekp(offset +2,ios::beg);
+      bookFile << "*";
+      bookFile.close();
+      LoadIndex();
+
+    } else {
+        cout << "This Books is not Available ! \n";
+    }
+
+
 }
 
 Books::~Books()
