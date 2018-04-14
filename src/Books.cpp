@@ -42,6 +42,13 @@ void Books:: AddBook()
     next++;
     sortPIndex();
 
+    SIndex Stemp;
+    strcpy(Stemp.SK,B.Author_ID);
+    strcpy(Stemp.PK,B.Book_ID);
+    sindex[next] = Stemp;
+    snext++;
+    sortSIndex();
+
     BOfile.close();
 }
 
@@ -93,7 +100,24 @@ void Books::sortPIndex() //bubble sort
         }
 }
 
-int Books:: IndexBinarySearch(char key[])
+void Books::sortSIndex() //bubble sort
+{
+    int len = snext - 1;
+    SIndex temp;
+    for (int i = 0; i<len; i++)
+        for (int j = 0; j<len - i; j++)
+        {
+            if (atoi(sindex[j].SK)>atoi(sindex[j + 1].SK))
+            {
+                temp = sindex[j];
+                sindex[j] = sindex[j + 1];
+                sindex[j + 1] = temp;
+            }
+        }
+}
+
+
+int Books:: PIndexBinarySearch(char key[])
 {
     int size = next;
     int low = 0, high = size - 1;
@@ -110,6 +134,24 @@ int Books:: IndexBinarySearch(char key[])
     }
     return -1;
 }
+
+int Books:: SIndexBinarySearch(char key[])
+{
+    int size = snext;
+    int low = 0, high = size - 1;
+    while (low <= high)
+    {
+    int middle = (low + high) / 2;
+    if (strcmp(sindex[middle].SK, key) == 0)
+        return middle;
+    else if (atoi(sindex[middle].SK)<atoi(key))
+        low = middle + 1;
+    else
+        high = middle - 1;
+    }
+    return -1;
+}
+
 
 void Books::constructPIndex()
 {
@@ -138,9 +180,37 @@ void Books::constructPIndex()
         sortPIndex();
 }
 
+void Books::constructSIndex()
+{
+    ifstream fin(datafile);  		snext = 0;
+    while(!fin.eof())
+        {
+            SIndex temp;
+            short len;
+            fin.read((char*)&len, sizeof(len));
+
+            if (fin.eof())
+                break;
+
+            char *buffer = new char [len];
+            fin.read(buffer, len);
+            if (buffer[0] == '*')
+                continue;
+            istringstream strbuf(buffer);
+            strbuf.getline(temp.PK,12, '|');
+            strbuf.getline(temp.SK,29, '|');
+            sindex[next] = temp;
+            next++;
+        }
+        fin.close();
+        sortPIndex();
+}
+
+
+
 void Books::savePIndex()
 {
-    ofstream fout("../BooksPIndex.txt", ios::trunc);
+    ofstream fout(Pindexfile, ios::trunc);
     for (int i = 0; i<next; i++)
     {
         PIndex temp = index[i];
@@ -149,18 +219,52 @@ void Books::savePIndex()
     fout.close();
 }
 
+/**
+void Books::saveSIndex()
+{
+    ofstream fout(Sindexfile, ios::trunc);
+    ofstream out("BooksLabelIDList.txt", ios::trunc);
+    vector<string>PKT;
+    for (int i = 0; i<snext; i++)
+        S.push(sindex[i].PK);
+    vector<int>I;
+    vector<int>T;
+    for (int i = 0; i<snext; i++)
+            T.push(0);
+
+    for (int i = 0; i<snext; i++)
+    {
+        for (int j=i+1; j<snext;j++)
+        {
+            if (sindex[i].SK == sindex[j].SK)
+                T[i] = j;
+
+            SIndex temp = sindex[i];
+            out.write(temp.PK, sizeof(temp.PK))
+            fout.write(temp.SK, sizeof(temp.SK));
+        }
+    }
+    fout.close();
+}
+**/
+
 void Books::LoadIndex()
 {
     if(!exists("../Books.txt"))
     {
         next = 0;
+        snext = 0;
     }
 
     else
+    {
         constructPIndex();
+        constructSIndex();
+    }
 }
 
-bool Books ::exists(char file [20])
+
+bool Books :: exists(char file [20])
 {
     ifstream f(file);
     if (f.fail())

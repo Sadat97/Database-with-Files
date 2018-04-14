@@ -21,7 +21,10 @@ class Books
         void LoadIndex();
         bool exists(char [20]);
         void ReadPIndex();
-
+        void constructSIndex();
+        int SIndexBinarySearch(char[]);
+        void sortSIndex();
+        void saveSIndex();
 
     private:
         string bookFilePath = "../Books.txt";
