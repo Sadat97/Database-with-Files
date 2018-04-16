@@ -186,7 +186,7 @@ int Authors:: SIndexBinarySearch(char key[])
     int middle = (low + high) / 2;
     if (strcmp(sindex[middle].SK, key) == 0)
         return middle;
-    else if (strcmp(sindex[middle].SK,key)>0)
+    else if (strcmp(sindex[middle].SK, key)>0)
         low = middle + 1;
     else
         high = middle - 1;

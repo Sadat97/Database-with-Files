@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1523715693 source:c:\users\amr_x\desktop\20160172-20160195-g#7\main.cpp
+1523909081 source:c:\users\amr_x\desktop\20160172-20160195-g#7\main.cpp
 	<iostream>
 	<fstream>
 	<cstring>
@@ -7,41 +7,18 @@
 	"Books.h"
 	"Authors.h"
 
-1523721086 c:\users\amr_x\desktop\20160172-20160195-g#7\include\books.h
+1523909000 c:\users\amr_x\desktop\20160172-20160195-g#7\include\books.h
 	<bits/stdc++.h>
 	<strstream>
 
-1523721166 c:\users\amr_x\desktop\20160172-20160195-g#7\include\authors.h
+1523909052 c:\users\amr_x\desktop\20160172-20160195-g#7\include\authors.h
 	<bits/stdc++.h>
 	<strstream>
 
-1523721178 source:c:\users\amr_x\desktop\20160172-20160195-g#7\src\authors.cpp
+1523909067 source:c:\users\amr_x\desktop\20160172-20160195-g#7\src\authors.cpp
 	"Authors.h"
 
-1523720653 source:c:\users\amr_x\desktop\20160172-20160195-g#7\src\books.cpp
-	"Books.h"
-	<vector>
-
-1523735489 source:m:\files\files -a2\database-with-files\src\authors.cpp
-	"Authors.h"
-
-1523735416 m:\files\files -a2\database-with-files\include\authors.h
-	<bits/stdc++.h>
-	<strstream>
-
-1523735586 source:m:\files\files -a2\database-with-files\main.cpp
-	<iostream>
-	<fstream>
-	<cstring>
-	<strstream>
-	"Books.h"
-	"Authors.h"
-
-1523734842 m:\files\files -a2\database-with-files\include\books.h
-	<bits/stdc++.h>
-	<strstream>
-
-1523735331 source:m:\files\files -a2\database-with-files\src\books.cpp
+1523909039 source:c:\users\amr_x\desktop\20160172-20160195-g#7\src\books.cpp
 	"Books.h"
 	<vector>
 
