@@ -8,23 +8,6 @@ using namespace std;
 
 class Authors
 {
-    public:
-        Authors();
-        ~Authors();
-        void AddAuthor();
-        void DeleteAuthor(char[]);
-        void ReadAuthor();
-        void sortPIndex();
-        int PIndexBinarySearch(char[]);
-        void constructPIndex();
-        void savePIndex();
-        void LoadIndex();
-        bool exists(char []);
-        void ReadPIndex();
-        void constructSIndex();
-        int SIndexBinarySearch(char[]);
-        void sortSIndex();
-        void saveSIndex();
 
     private:
         int next,snext;
@@ -48,10 +31,31 @@ class Authors
         {
             char SK[50];
             char PK [30];
+            int offset;
 
         };
         SIndex sindex[indexSize];
 
+    public:
+        Authors();
+        ~Authors();
+        void AddAuthor();
+        void DeleteAuthor(char[]);
+        void ReadAuthor(int,Author&);
+        void ReadAuthor();
+        void sortPIndex();
+        int PIndexBinarySearch(char[]);
+        void constructPIndex();
+        void savePIndex();
+        void LoadIndex();
+        bool exists(char []);
+        void ReadPIndex();
+        void constructSIndex();
+        int SIndexBinarySearch(char[]);
+        void sortSIndex();
+        void saveSIndex();
+        void PrintAuthorAID();
+        void PrintAuthorAName();
 };
 
 #endif // AUTHORS_H

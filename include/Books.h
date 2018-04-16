@@ -8,30 +8,8 @@ using namespace std;
 
 class Books
 {
-    public:
-        Books();
-        ~Books();
-        void AddBook();
-        void DeleteBook(char ID []);
-        void ReadBook();
-        void sortPIndex();
-        int PIndexBinarySearch(char[]);
-        void constructPIndex();
-        void savePIndex();
-        void LoadIndex();
-        bool exists(char []);
-        void ReadPIndex();
-        void constructSIndex();
-        int SIndexBinarySearch(char[]);
-        void sortSIndex();
-        void saveSIndex();
 
     private:
-//        char datafile [];
-//        char Pindexfile [];
-//        char Sindexfile [];
-//        char LabelIDList [];
-
         int next,snext;
         const int MaxBuffS = 200;
         struct Book
@@ -53,9 +31,31 @@ class Books
         {
             char SK[30];
             char PK [13];
+            int offset;
 
         };
         SIndex sindex[indexSize];
+
+    public:
+        Books();
+        ~Books();
+        void AddBook();
+        void DeleteBook(char ID []);
+        void ReadBook(int,Book&);
+        void ReadBook();
+        void sortPIndex();
+        int PIndexBinarySearch(char[]);
+        void constructPIndex();
+        void savePIndex();
+        void LoadIndex();
+        bool exists(char []);
+        void ReadPIndex();
+        void constructSIndex();
+        int SIndexBinarySearch(char[]);
+        void sortSIndex();
+        void saveSIndex();
+        void PrintBookBID();
+        void PrintBookAID();
 
 };
 

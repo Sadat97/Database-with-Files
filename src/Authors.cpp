@@ -47,6 +47,50 @@ void Authors:: AddAuthor()
     AOfile.close();
 }
 
+void Authors::DeleteAuthor(char ID []){
+    int offset = PIndexBinarySearch(ID);
+    if (offset != -1){
+      fstream bookFile ("Authors.txt",ios::in | ios::out);
+      bookFile.seekp(offset +2,ios::beg);
+      bookFile << "*";
+      bookFile.close();
+      LoadIndex();
+
+    } else {
+        cout << "This Author is not Available ! \n";
+    }
+
+
+}
+
+
+
+void Authors:: ReadAuthor(int offset,Author& A)
+{
+    ifstream AIfile("Authors.txt");
+
+    AIfile.seekg(offset,ios::beg);
+
+    short length;
+    AIfile.read((char*)&length,sizeof(length));
+    char* buffer = new char[length];
+    AIfile.read(buffer, length);
+
+    istrstream strbuf(buffer);
+
+    strbuf.getline(A.Author_ID, 29, '|');
+    strbuf.getline(A.Author_Name, 49, '|');
+    strbuf.getline(A.Author_Address, 49, '|');
+    strbuf.getline(A.Author_Mobile,10,'|');
+
+    cout <<"\nAuthor ID: "<< A.Author_ID << endl;
+    cout <<"Author Name: "<< A.Author_Name << endl;
+    cout <<"Author Address: "<< A.Author_Address<< endl;
+    cout <<"Author Mobile: " <<A.Author_Mobile<< endl<< endl;
+
+    delete buffer;
+    AIfile.close();
+}
 
 void Authors:: ReadAuthor()
 {
@@ -73,7 +117,7 @@ void Authors:: ReadAuthor()
         cout <<"\nAuthor ID: "<< A.Author_ID << endl;
         cout <<"Author Name: "<< A.Author_Name << endl;
         cout <<"Author Address: "<< A.Author_Address<< endl;
-        cout <<"Author Mobile: " <<A.Author_Mobile<< endl;
+        cout <<"Author Mobile: " <<A.Author_Mobile<< endl<< endl;
 
         delete buffer;
     }
@@ -142,13 +186,14 @@ int Authors:: SIndexBinarySearch(char key[])
     int middle = (low + high) / 2;
     if (strcmp(sindex[middle].SK, key) == 0)
         return middle;
-    else if (atoi(sindex[middle].SK)<atoi(key))
+    else if (strcmp(sindex[middle].SK,key)>0)
         low = middle + 1;
     else
         high = middle - 1;
     }
     return -1;
 }
+
 
 void Authors::constructPIndex()
 {
@@ -225,10 +270,10 @@ void Authors::saveSIndex()
     ofstream sout("AuthorsSIndex.txt", ios::trunc);
     ofstream lout("AuthorsList.txt", ios::trunc);
 
-
     vector<string>SKT;
     vector<string>PKT;
     vector<int>Lptr;
+    vector<int>ptr;
 
     for (int i=0;i<snext;i++)
     {
@@ -266,14 +311,46 @@ void Authors::saveSIndex()
 
     }
 
-    for (int i=0;i<SKT.size();i++)
-        sout<<SKT[i]<<" "<<i<<endl;
     for (int i=0;i<PKT.size();i++)
-        lout<<PKT[i]<<" "<<Lptr[i]<<endl;
+    {
+        int c = 0;
+        while (Lptr[i] != -1)
+        {
+            if (c == 0)
+                ptr.push_back(lout.tellp());
+                lout<<PKT[i]<<' '<<Lptr[i]<<endl;
+                i++;
+                c++;
+        }
+        if (c > 0 )
+        {
+            lout<<PKT[i]<<' '<<Lptr[i]<<endl;
+            continue;
+        }
 
-
+        else
+        {
+            ptr.push_back(lout.tellp());
+            lout<<PKT[i]<<' '<<Lptr[i]<<endl;
+        }
+    }
+    for (int i=0;i<SKT.size();i++)
+    {
+        if (SKT.size()<snext)
+        {
+            for (int x = 0;x<SKT.size();x++)
+            {
+                strcpy(sindex[x].SK ,SKT[x].c_str());
+            }
+            snext = SKT.size();
+        }
+        sindex[i].offset = sout.tellp();
+//        cout<<"Offset = "<<sindex[i].offset<<endl<<sindex[i].SK<<endl<<index[i].PK<<endl;
+        sout<<SKT[i]<<' '<<ptr[i]<<endl;
+    }
     lout.close();
     sout.close();
+
 }
 
 
@@ -323,20 +400,71 @@ bool Authors ::exists(char file [20])
 }
 
 
-void Authors::DeleteAuthor(char ID []){
-    int offset = PIndexBinarySearch(ID);
-    if (offset != -1){
-      fstream bookFile ("Authors.txt",ios::in | ios::out);
-      bookFile.seekp(offset +2,ios::beg);
-      bookFile << "*";
-      bookFile.close();
-      LoadIndex();
+void Authors::PrintAuthorAID()
+{
+    cout<<"Enter the Author's ID: ";
+    Author A;
+    cin.getline(A.Author_ID,29);
+    int offset = PIndexBinarySearch(A.Author_ID);
+    if (offset == -1)
+        cout<<"Invalid ID\n";
+    else
+    {
+        ReadAuthor(offset,A);
+    }
+}
 
-    } else {
-        cout << "This Author is not Available ! \n";
+
+void Authors::PrintAuthorAName()
+{
+    cout<<"Enter the Author's Name: ";
+    Author A;
+    cin.getline(A.Author_Name,49);
+    int Idx = SIndexBinarySearch(A.Author_Name);
+    cout<<" out "<<Idx<<endl;
+    if (Idx == -1)
+    {
+        cout<<"Invalid Name\n\n";
     }
 
+    else
+    {
+        cout<<Idx<<endl;
+        ifstream listfile ("AuthorsSIndex.txt");
+        listfile.seekg(sindex[Idx].offset,ios::beg);
 
+        vector<string>PK;
+        string t;
+        int RRN;
+
+        listfile>>t>>RRN;
+        listfile.close();
+
+        listfile.open("AuthorsList.txt");
+        listfile.seekg(RRN,ios::beg);
+
+        listfile>>t>>RRN;
+        while (RRN != -1)
+        {
+            PK.push_back(t);
+            if (!listfile.eof())
+            {
+                listfile>>t>>RRN;
+            }
+        }
+
+        PK.push_back(t);
+
+        for (int i = 0;i<PK.size();i++)
+        {
+            char arr [PK.size()];
+            strcpy(arr,PK[i].c_str());
+            int offset = PIndexBinarySearch(arr);
+            ReadAuthor(offset,A);
+        }
+
+        listfile.close();
+    }
 }
 
 

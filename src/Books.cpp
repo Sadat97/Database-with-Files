@@ -2,10 +2,7 @@
 #include <vector>
 Books::Books()
 {
-//    char datafile [50]="Books.txt";
-//    char Pindexfile [50]="BooksPIndex.txt";
-//    char Sindexfile [50]="BooksSIndex.txt";
-//    char LabelIDList [50]="BooksList.txt";
+
 }
 
 
@@ -53,6 +50,49 @@ void Books:: AddBook()
 }
 
 
+void Books::DeleteBook(char ID []){
+    int offset = PIndexBinarySearch(ID);
+    if (offset != -1){
+      fstream bookFile ("Books.txt",ios::in | ios::out);
+      bookFile.seekp(offset +2,ios::beg);
+      bookFile << "*";
+      bookFile.close();
+      LoadIndex();
+
+    } else {
+        cout << "This Books is not Available ! \n";
+    }
+
+
+}
+
+void Books:: ReadBook(int offset,Book &b)
+{
+    ifstream BIfile("Books.txt",ios::app);
+    BIfile.seekg(offset,ios::beg);
+
+    short length;
+    BIfile.read((char*)&length,sizeof(length));
+    char* buffer = new char[length];
+    BIfile.read(buffer, length);
+
+    istrstream strbuf(buffer);
+
+    strbuf.getline(b.Book_ID, 12, '|');
+    strbuf.getline(b.Author_ID, 29, '|');
+    strbuf.getline(b.Book_Title, 49, '|');
+    strbuf.getline(b.Book_Price,49,'|');
+
+    cout <<"\nBook ID: "<< b.Book_ID << endl;
+    cout <<"Author ID: "<< b.Author_ID << endl;
+    cout <<"Book Title: "<< b.Book_Title<< endl;
+    cout <<"Book Price: "<< b.Book_Price<< endl<< endl;
+    delete buffer;
+
+    BIfile.close();
+}
+
+
 void Books:: ReadBook()
 {
     ifstream BIfile("Books.txt",ios::app);
@@ -78,11 +118,12 @@ void Books:: ReadBook()
         cout <<"\nBook ID: "<< b.Book_ID << endl;
         cout <<"Author ID: "<< b.Author_ID << endl;
         cout <<"Book Title: "<< b.Book_Title<< endl;
-        cout <<"Book Price: "<< b.Book_Price<< endl;
+        cout <<"Book Price: "<< b.Book_Price<< endl<< endl;
         delete buffer;
     }
     BIfile.close();
 }
+
 
 void Books::sortPIndex() //bubble sort
 {
@@ -170,7 +211,7 @@ void Books::constructPIndex()
             if (buffer[0] == '*')
                 continue;
             istringstream strbuf(buffer);
-            strbuf.getline(temp.PK,12, '|');/****/
+            strbuf.getline(temp.PK,12, '|');
             temp.offset = offset;
             index[next] = temp;
             next++;
@@ -226,8 +267,8 @@ void Books::saveSIndex()
 
     vector<string>SKT;
     vector<string>PKT;
-    //vector<int>Sptr;
     vector<int>Lptr;
+    vector<int>ptr;
 
     for (int i=0;i<snext;i++)
     {
@@ -241,6 +282,7 @@ void Books::saveSIndex()
         }
         else
             SKT.push_back(sindex[i].SK);
+
     }
 
     for (int i=0;i<snext;i++)
@@ -265,12 +307,42 @@ void Books::saveSIndex()
 
     }
 
-    for (int i=0;i<SKT.size();i++)
-        sout<<SKT[i]<<" "<<i<<endl;
     for (int i=0;i<PKT.size();i++)
-        lout<<PKT[i]<<" "<<Lptr[i]<<endl;
+    {
+        int c = 0;
+        while (Lptr[i] != -1)
+        {
+            if (c == 0)
+                ptr.push_back(lout.tellp());
+                lout<<PKT[i]<<' '<<Lptr[i]<<endl;
+                i++;
+                c++;
+        }
+        if (c > 0 )
+        {
+            lout<<PKT[i]<<' '<<Lptr[i]<<endl;
+            continue;
+        }
 
-
+        else
+        {
+            ptr.push_back(lout.tellp());
+            lout<<PKT[i]<<' '<<Lptr[i]<<endl;
+        }
+    }
+    for (int i=0;i<SKT.size();i++)
+    {
+        if (SKT.size()<snext)
+        {
+            for (int x = 0;x<SKT.size();x++)
+            {
+                strcpy(sindex[x].SK ,SKT[x].c_str());
+            }
+            snext = SKT.size();
+        }
+        sindex[i].offset = sout.tellp();
+        sout<<SKT[i]<<' '<<ptr[i]<<endl;
+    }
     lout.close();
     sout.close();
 }
@@ -318,19 +390,70 @@ void Books::ReadPIndex()
     fin.close();
 }
 
-void Books::DeleteBook(char ID []){
-    int offset = PIndexBinarySearch(ID);
-    if (offset != -1){
-      fstream bookFile ("Books.txt",ios::in | ios::out);
-      bookFile.seekp(offset +2,ios::beg);
-      bookFile << "*";
-      bookFile.close();
-      LoadIndex();
-
-    } else {
-        cout << "This Books is not Available ! \n";
+void Books::PrintBookBID()
+{
+    cout<<"Enter the Book's ID: ";
+    Book B;
+    cin.getline(B.Book_ID,12);
+    int offset = PIndexBinarySearch(B.Book_ID);
+    if (offset == -1)
+        cout<<"Invalid ID\n\n";
+    else
+    {
+        ReadBook(offset,B);
     }
 
+}
+
+void Books::PrintBookAID()
+{
+    cout<<"Enter the Author's ID: ";
+    Book B;
+    cin.getline(B.Author_ID,29);
+    int Idx = SIndexBinarySearch(B.Author_ID);
+    if (Idx == -1)
+    {
+        cout<<"Invalid ID\n\n";
+    }
+
+    else
+    {
+        ifstream listfile ("BooksSIndex.txt");
+
+        listfile.seekg(sindex[Idx].offset,ios::beg);
+
+        vector<string>PK;
+        string t;
+        int RRN;
+
+        listfile>>t>>RRN;
+        listfile.close();
+
+        listfile.open("BooksList.txt");
+        listfile.seekg(RRN,ios::beg);
+
+        listfile>>t>>RRN;
+        while (RRN != -1)
+        {
+            PK.push_back(t);
+            if (!listfile.eof())
+            {
+                listfile>>t>>RRN;
+            }
+        }
+
+        PK.push_back(t);
+
+        for (int i = 0;i<PK.size();i++)
+        {
+            char arr [PK.size()];
+            strcpy(arr,PK[i].c_str());
+            int offset = PIndexBinarySearch(arr);
+            ReadBook(offset,B);
+        }
+
+        listfile.close();
+    }
 
 }
 
