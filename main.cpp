@@ -2,8 +2,8 @@
 #include <fstream>
 #include <cstring>
 #include <strstream>
-#include "Books.h"
-#include "Authors.h"
+#include "../include/Books.h"
+#include "../include/Authors.h"
 
 using namespace std;
 
@@ -35,9 +35,6 @@ string * AnalyizeQuery(string query){
         arr[i] = temp;
         ++i;
     }
-//    for(i = 0; i < 4; i++){
-//        cout<< endl << arr[i] ;
-//    }
     return   arr;
 }
 
@@ -57,7 +54,6 @@ string * WhereCondition(string query){
     wherecond[1] = right;
     left  = temp.substr(0, temp.find("=") -1);
     wherecond[0] = left;
-    //cout << "this is left " << left << " And this is Right " << right << endl;
     return  wherecond;
 }
 
@@ -103,8 +99,12 @@ string query ;
                 string *firstpart = queryselectpart;
                 string *secondpart = wherecond;
              int index = 1;
+<<<<<<< HEAD
              if ((firstpart[2] == "")){
                  if (secondpart[0] != "NULL") {
+=======
+             if ((firstpart[2] == "") && (secondpart[0] != "NULL")){
+>>>>>>> 45f21e2271aacb846ff68718c270b840d67190f7
                     if (firstpart[1] == "Books"){
                             if (secondpart[0] == "Author_ID")
                                     index = 2;
@@ -118,6 +118,7 @@ string query ;
 
                     Aobj.Queryexcuter(queryselectpart,wherecond,index);
                     }
+<<<<<<< HEAD
                  }else{
                      int attribute;
                      if (firstpart[0]=="all"){attribute = 0;}
@@ -144,6 +145,10 @@ string query ;
                      }
                      else {cout << "Not A Table !"<<endl;}
                  }
+=======
+
+
+>>>>>>> 45f21e2271aacb846ff68718c270b840d67190f7
              } else {int tempA = Aobj.ReadBookByOffset(0);
                    int tempB = Bobj.ReadBookByOffset(0);
                     while ((tempA != -1) && (tempB != -1)){
@@ -151,7 +156,10 @@ string query ;
                               tempB = Bobj.ReadBookByOffset(tempB);
                     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 45f21e2271aacb846ff68718c270b840d67190f7
              }
 
 

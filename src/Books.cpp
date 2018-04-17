@@ -78,13 +78,14 @@ void Books:: ReadBook(int offset,Book &b)
     BIfile.read(buffer, length);
 
     istrstream strbuf(buffer);
+    if (b.Book_ID[0] != '*')
+    {
+        strbuf.getline(b.Book_ID, 12, '|');
+        strbuf.getline(b.Author_ID, 29, '|');
+        strbuf.getline(b.Book_Title, 49, '|');
+        strbuf.getline(b.Book_Price,49,'|');
 
-    strbuf.getline(b.Book_ID, 12, '|');
-    strbuf.getline(b.Author_ID, 29, '|');
-    strbuf.getline(b.Book_Title, 49, '|');
-    strbuf.getline(b.Book_Price,49,'|');
-
-
+    }
     delete buffer;
     BIfile.close();
 }
@@ -101,6 +102,33 @@ void Books:: ReadBook(int offset,Book &b,int n)
     BIfile.read(buffer, length);
 
     istrstream strbuf(buffer);
+    if (b.Book_ID[0] != '*')
+    {
+        strbuf.getline(b.Book_ID, 12, '|');
+        strbuf.getline(b.Author_ID, 29, '|');
+        strbuf.getline(b.Book_Title, 49, '|');
+        strbuf.getline(b.Book_Price,49,'|');
+    }
+    delete buffer;
+    BIfile.close();
+}
+
+
+int Books:: ReadBookByOffset(int offset)
+{   Book b;
+    ifstream BIfile("Books.txt");
+    BIfile.seekg(0,ios::end);
+    int end_of_file = BIfile.tellg();
+
+    BIfile.seekg(offset,ios::beg);
+
+    short length;
+    BIfile.read((char*)&length,sizeof(length));
+    char* buffer = new char[length];
+    BIfile.read(buffer, length);
+
+    istrstream strbuf(buffer);
+
 
     strbuf.getline(b.Book_ID, 12, '|');
     strbuf.getline(b.Author_ID, 29, '|');
@@ -109,6 +137,26 @@ void Books:: ReadBook(int offset,Book &b,int n)
 
     delete buffer;
     BIfile.close();
+}
+
+
+void Books:: ReadBook(int offset,Book &b,int n)
+{
+    ifstream BIfile("Books.txt",ios::app);
+    BIfile.seekg(offset,ios::beg);
+
+    if (b.Book_ID[0] != '*'){
+        cout <<"\nBook ID: "<< b.Book_ID << endl;
+        cout <<"Author ID: "<< b.Author_ID << endl;
+        cout <<"Book Title: "<< b.Book_Title<< endl;
+        cout <<"Book Price: "<< b.Book_Price<< endl;
+    }
+    int current = BIfile.tellg();
+    BIfile.close();
+   if (current == end_of_file)
+        return -1 ;
+
+    return current;
 }
 
 

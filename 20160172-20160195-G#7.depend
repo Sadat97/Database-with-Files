@@ -22,27 +22,51 @@
 	"Books.h"
 	<vector>
 
-1523987123 source:m:\files\files -a2\database-with-files\src\authors.cpp
+1523973595 source:m:\files\files -a2\database-with-files\src\authors.cpp
 	"Authors.h"
 
-1523987220 m:\files\files -a2\database-with-files\include\authors.h
+1523973555 m:\files\files -a2\database-with-files\include\authors.h
 	<bits/stdc++.h>
 	<strstream>
 
-1523986961 source:m:\files\files -a2\database-with-files\src\books.cpp
+1523973347 source:m:\files\files -a2\database-with-files\src\books.cpp
 	"../include/Books.h"
 	"../include/Authors.h"
 	<vector>
 
-1523987219 m:\files\files -a2\database-with-files\include\books.h
+1523972153 m:\files\files -a2\database-with-files\include\books.h
 	<bits/stdc++.h>
 	<strstream>
 
-1523987844 source:m:\files\files -a2\database-with-files\main.cpp
+1523973523 source:m:\files\files -a2\database-with-files\main.cpp
 	<iostream>
 	<fstream>
 	<cstring>
 	<strstream>
 	"Books.h"
 	"Authors.h"
+
+1523986488 source:c:\users\amr_x\desktop\database-with-files\main.cpp
+	<iostream>
+	<fstream>
+	<cstring>
+	<strstream>
+	"../include/Books.h"
+	"../include/Authors.h"
+
+1523972153 c:\users\amr_x\desktop\database-with-files\include\books.h
+	<bits/stdc++.h>
+	<strstream>
+
+1523973555 c:\users\amr_x\desktop\database-with-files\include\authors.h
+	<bits/stdc++.h>
+	<strstream>
+
+1523985858 source:c:\users\amr_x\desktop\database-with-files\src\authors.cpp
+	"Authors.h"
+
+1523986917 source:c:\users\amr_x\desktop\database-with-files\src\books.cpp
+	"../include/Books.h"
+	"../include/Authors.h"
+	<vector>
 

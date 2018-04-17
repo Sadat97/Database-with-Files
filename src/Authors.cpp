@@ -77,6 +77,30 @@ void Authors:: ReadAuthor(int offset,Author& A)
     AIfile.read(buffer, length);
 
     istrstream strbuf(buffer);
+    if (A.Author_ID[0] != '*')
+    {
+        strbuf.getline(A.Author_ID, 29, '|');
+        strbuf.getline(A.Author_Name, 49, '|');
+        strbuf.getline(A.Author_Address, 49, '|');
+        strbuf.getline(A.Author_Mobile,10,'|');
+    }
+    delete buffer;
+    AIfile.close();
+}
+
+
+void Authors:: ReadAuthor(int offset,Author& A,int dummy)
+{
+    ifstream AIfile("Authors.txt");
+
+    AIfile.seekg(offset,ios::beg);
+
+    short length;
+    AIfile.read((char*)&length,sizeof(length));
+    char* buffer = new char[length];
+    AIfile.read(buffer, length);
+
+    istrstream strbuf(buffer);
 
     strbuf.getline(A.Author_ID, 29, '|');
     strbuf.getline(A.Author_Name, 49, '|');
@@ -112,6 +136,13 @@ void Authors:: ReadAuthor(int offset,Author& A,int dummy)
     cout <<"Author Address: "<< A.Author_Address<< endl;
     cout <<"Author Mobile: " <<A.Author_Mobile<< endl<< endl;
 
+    if (A.Author_ID[0] != '*')
+    {
+        cout <<"\nAuthor ID: "<< A.Author_ID << endl;
+        cout <<"Author Name: "<< A.Author_Name << endl;
+        cout <<"Author Address: "<< A.Author_Address<< endl;
+        cout <<"Author Mobile: " <<A.Author_Mobile<< endl<< endl;
+    }
     delete buffer;
     AIfile.close();
 }
@@ -137,11 +168,14 @@ int Authors:: ReadBookByOffset(int offset)
     strbuf.getline(A.Author_Address, 49, '|');
     strbuf.getline(A.Author_Mobile,10,'|');
 
-    cout <<"\nAuthor ID: "<< A.Author_ID << endl;
-    cout <<"Author Name: "<< A.Author_Name << endl;
-    cout <<"Author Address: "<< A.Author_Address<< endl;
-    cout <<"Author Mobile: " <<A.Author_Mobile<< endl<< endl;
-
+    
+    if (A.Author_ID[0] != '*')
+    {
+        cout <<"\nAuthor ID: "<< A.Author_ID << endl;
+        cout <<"Author Name: "<< A.Author_Name << endl;
+        cout <<"Author Address: "<< A.Author_Address<< endl;
+        cout <<"Author Mobile: " <<A.Author_Mobile<< endl<< endl;
+    }
     delete buffer;
     int current = BIfile.tellg();
     BIfile.close();
