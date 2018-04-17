@@ -42,7 +42,9 @@ class Authors
         void AddAuthor();
         void DeleteAuthor(char[]);
         void ReadAuthor(int,Author&);
-        void ReadAuthor();
+        int ReadBookByOffset(int offset);
+        void ReadAuthor(int,Author&,int);
+        void ReadAuthor(int att );
         void sortPIndex();
         int PIndexBinarySearch(char[]);
         void constructPIndex();
@@ -56,6 +58,7 @@ class Authors
         void saveSIndex();
         void PrintAuthorAID();
         void PrintAuthorAName();
+        void Queryexcuter(string * part1 , string * part2,int index);
 };
 
 #endif // AUTHORS_H

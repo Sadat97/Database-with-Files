@@ -22,3 +22,27 @@
 	"Books.h"
 	<vector>
 
+1523987123 source:m:\files\files -a2\database-with-files\src\authors.cpp
+	"Authors.h"
+
+1523987220 m:\files\files -a2\database-with-files\include\authors.h
+	<bits/stdc++.h>
+	<strstream>
+
+1523986961 source:m:\files\files -a2\database-with-files\src\books.cpp
+	"../include/Books.h"
+	"../include/Authors.h"
+	<vector>
+
+1523987219 m:\files\files -a2\database-with-files\include\books.h
+	<bits/stdc++.h>
+	<strstream>
+
+1523987844 source:m:\files\files -a2\database-with-files\main.cpp
+	<iostream>
+	<fstream>
+	<cstring>
+	<strstream>
+	"Books.h"
+	"Authors.h"
+

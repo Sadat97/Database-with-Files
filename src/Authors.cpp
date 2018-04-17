@@ -83,6 +83,30 @@ void Authors:: ReadAuthor(int offset,Author& A)
     strbuf.getline(A.Author_Address, 49, '|');
     strbuf.getline(A.Author_Mobile,10,'|');
 
+
+    delete buffer;
+    AIfile.close();
+}
+
+
+void Authors:: ReadAuthor(int offset,Author& A,int dummy)
+{
+    ifstream AIfile("Authors.txt");
+
+    AIfile.seekg(offset,ios::beg);
+
+    short length;
+    AIfile.read((char*)&length,sizeof(length));
+    char* buffer = new char[length];
+    AIfile.read(buffer, length);
+
+    istrstream strbuf(buffer);
+
+    strbuf.getline(A.Author_ID, 29, '|');
+    strbuf.getline(A.Author_Name, 49, '|');
+    strbuf.getline(A.Author_Address, 49, '|');
+    strbuf.getline(A.Author_Mobile,10,'|');
+
     cout <<"\nAuthor ID: "<< A.Author_ID << endl;
     cout <<"Author Name: "<< A.Author_Name << endl;
     cout <<"Author Address: "<< A.Author_Address<< endl;
@@ -92,7 +116,42 @@ void Authors:: ReadAuthor(int offset,Author& A)
     AIfile.close();
 }
 
-void Authors:: ReadAuthor()
+
+int Authors:: ReadBookByOffset(int offset)
+{   Author A;
+   ifstream BIfile("Authors.txt");
+    BIfile.seekg(0,ios::end);
+    int end_of_file = BIfile.tellg();
+
+    BIfile.seekg(offset,ios::beg);
+
+    short length;
+    BIfile.read((char*)&length,sizeof(length));
+    char* buffer = new char[length];
+    BIfile.read(buffer, length);
+
+    istrstream strbuf(buffer);
+
+    strbuf.getline(A.Author_ID, 29, '|');
+    strbuf.getline(A.Author_Name, 49, '|');
+    strbuf.getline(A.Author_Address, 49, '|');
+    strbuf.getline(A.Author_Mobile,10,'|');
+
+    cout <<"\nAuthor ID: "<< A.Author_ID << endl;
+    cout <<"Author Name: "<< A.Author_Name << endl;
+    cout <<"Author Address: "<< A.Author_Address<< endl;
+    cout <<"Author Mobile: " <<A.Author_Mobile<< endl<< endl;
+
+    delete buffer;
+    int current = BIfile.tellg();
+    BIfile.close();
+    if (current == end_of_file)
+        return -1 ;
+
+    return current;
+}
+
+void Authors:: ReadAuthor(int att = 0)
 {
     ifstream AIfile("Authors.txt");
     Author A;
@@ -114,11 +173,21 @@ void Authors:: ReadAuthor()
         strbuf.getline(A.Author_Address, 49, '|');
         strbuf.getline(A.Author_Mobile,10,'|');
 
+        if (A.Author_ID[0] == '*')
+            continue;
+if (att == 0){
         cout <<"\nAuthor ID: "<< A.Author_ID << endl;
         cout <<"Author Name: "<< A.Author_Name << endl;
         cout <<"Author Address: "<< A.Author_Address<< endl;
         cout <<"Author Mobile: " <<A.Author_Mobile<< endl<< endl;
-
+        } else if (att == 1)
+    cout <<"\nAuthor ID: "<< A.Author_ID << endl;
+        else if (att == 2)
+    cout <<"Author Name: "<< A.Author_Name << endl;
+        else if (att == 3)
+    cout <<"Author Address: "<< A.Author_Address<< endl;
+        else if (att == 4)
+    cout <<"Author Mobile: " <<A.Author_Mobile<< endl<< endl;
         delete buffer;
     }
     AIfile.close();
@@ -462,6 +531,60 @@ void Authors::PrintAuthorAName()
         }
 
         listfile.close();
+    }
+}
+
+
+
+void Authors::Queryexcuter(string * part1 , string * part2,int index){
+
+char key[part2[1].size()];
+    char attr[part1[0].size()];
+    strcpy(key,part2[1].c_str());
+    strcpy(attr,part1[0].c_str());
+
+
+if (index == 1){
+
+    int offset = PIndexBinarySearch(key);
+     if (offset != -1){
+         Author a;
+        ReadAuthor(offset,a);
+       if (strcmp(attr,"all")==0)
+            cout <<"Author_ID: "<<a.Author_ID<<endl<<"Author_Name: "<<a.Author_Name<<endl
+            << "Author_Address: " << a.Author_Address<<endl << "Author_Mobile: " <<a.Author_Mobile <<endl;
+        else if (strcmp(attr,"Author_Address") == 0)
+            cout << "Author_Address: "<< a.Author_Address<<endl;
+        else if (strcmp(attr,"Author_Mobile") == 0)
+             cout << "Author_Mobile: "<< a.Author_Mobile<<endl;
+        else if ((strcmp(attr,"Author_Name") == 0))
+              cout << "Author_Name: " << a.Author_Name<<endl;
+       else if ((strcmp(attr,"Author_ID") == 0))
+              cout << "Author_ID: " << a.Author_ID<<endl;
+        else
+            cout << "Wrong Query! \n";
+
+
+    }
+}else if (index == 2){
+int offset = SIndexBinarySearch(key);
+     if (offset != -1){
+         Author a;
+        ReadAuthor(offset,a);
+        if (strcmp(attr,"all")==0)
+            cout <<"Author_ID: "<<a.Author_ID<<endl<<"Author_Name: "<<a.Author_Name<<endl
+            << "Author_Address: " << a.Author_Address<<endl << "Author_Mobile: " <<a.Author_Mobile <<endl;
+        else if (strcmp(attr,"Author_Address") == 0)
+            cout << "Author_Address: "<< a.Author_Address<<endl;
+        else if (strcmp(attr,"Author_Mobile") == 0)
+             cout << "Author_Mobile: "<< a.Author_Mobile<<endl;
+        else if ((strcmp(attr,"Author_Name") == 0))
+              cout << "Author_Name: " << a.Author_Name<<endl;
+       else if ((strcmp(attr,"Author_ID") == 0))
+              cout << "Author_ID: " << a.Author_ID<<endl;
+        else
+            cout << "Wrong Query! \n";
+     }
     }
 }
 

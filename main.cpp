@@ -17,22 +17,22 @@ string * AnalyizeQuery(string query){
     string line = query;
     string * arr = new string [3];
     int i = 0;
+    if (query.find("and ") == string::npos)
+      arr[2]="";
+
     stringstream ssin(line);
     string temp;
     bool thereisAnd = false;
-    while (ssin.good() && i < 3){
+    while (ssin.good() && i < 2){
         ssin >> temp;
         if (temp == "select" || temp == "from" )
             continue;
-        if (temp == "and")
+        if (temp == "where ")
         {
-            thereisAnd = true;
-            continue;
+            break;
         }
 
         arr[i] = temp;
-        if (thereisAnd)
-            break;
         ++i;
     }
 //    for(i = 0; i < 4; i++){
@@ -53,17 +53,12 @@ string * WhereCondition(string query){
 
     string temp = query.substr(position + 6);
     string right , left ;
-    right = temp.substr(temp.find("=")+1);
+    right = temp.substr(temp.find("=")+2);
     wherecond[1] = right;
-    left  = temp.substr(0, temp.find("="));
+    left  = temp.substr(0, temp.find("=") -1);
     wherecond[0] = left;
     //cout << "this is left " << left << " And this is Right " << right << endl;
     return  wherecond;
-}
-
-void Queryexcuter(string * firstpart[],string * secondpart[]){
-
-
 }
 
 int main()
@@ -105,7 +100,61 @@ string query ;
             if (QueryChecker(query)){
                 queryselectpart = AnalyizeQuery(query);
                 wherecond = WhereCondition(query);
-                QueryExcuter(queryselectpart,wherecond);
+                string *firstpart = queryselectpart;
+                string *secondpart = wherecond;
+             int index = 1;
+             if ((firstpart[2] == "")){
+                 if (secondpart[0] != "NULL") {
+                    if (firstpart[1] == "Books"){
+                            if (secondpart[0] == "Author_ID")
+                                    index = 2;
+                    Bobj.Queryexcuter(queryselectpart,wherecond,index);
+                    } else if (firstpart[1] == "Authors") {
+
+                     if (secondpart[0] == "Author_ID")
+                                    index = 1;
+                     else if (secondpart[0] == "Author_name")
+                                    index = 2;
+
+                    Aobj.Queryexcuter(queryselectpart,wherecond,index);
+                    }
+                 }else{
+                     int attribute;
+                     if (firstpart[0]=="all"){attribute = 0;}
+
+                     if (firstpart[1] == "books"){
+                            if (firstpart[0]=="all")            {attribute = 0;}
+                            else if (firstpart[0]=="Book_ID")   {attribute = 1;}
+                            else if (firstpart[0]=="Author_ID") {attribute = 2;}
+                            else if (firstpart[0]=="Book_Title"){attribute = 3;}
+                            else if (firstpart[0]=="Book_Price"){attribute = 4;}
+                            else {cout <<"wrong attribue !";break;}
+                            Bobj.ReadBook(attribute);
+
+                     }
+                     else if  (firstpart[1] == "authors"){
+                            if      (firstpart[0]=="all")            {attribute = 0;}
+                            else if (firstpart[0]=="Author_ID")      {attribute = 1;}
+                            else if (firstpart[0]=="Author_Name")    {attribute = 2;}
+                            else if (firstpart[0]=="Author_Address") {attribute = 3;}
+                            else if (firstpart[0]=="Author_Mobile")  {attribute = 4;}
+                            else {cout <<"wrong attribue !";break;}
+                            Aobj.ReadAuthor(attribute);
+
+                     }
+                     else {cout << "Not A Table !"<<endl;}
+                 }
+             } else {int tempA = Aobj.ReadBookByOffset(0);
+                   int tempB = Bobj.ReadBookByOffset(0);
+                    while ((tempA != -1) && (tempB != -1)){
+                              tempA = Aobj.ReadBookByOffset(tempA);
+                              tempB = Bobj.ReadBookByOffset(tempB);
+                    }
+
+
+             }
+
+
             }
             break;
 

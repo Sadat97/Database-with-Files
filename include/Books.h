@@ -42,7 +42,8 @@ class Books
         void AddBook();
         void DeleteBook(char ID []);
         void ReadBook(int,Book&);
-        void ReadBook();
+        void ReadBook(int,Book&,int);
+        void ReadBook(int att );
         void sortPIndex();
         int PIndexBinarySearch(char[]);
         void constructPIndex();
@@ -56,6 +57,10 @@ class Books
         void saveSIndex();
         void PrintBookBID();
         void PrintBookAID();
+        void PrintBookAID(int,Book &);
+        Book PrintBookAID(int);
+        void Queryexcuter(string * part1 , string * part2,int index);
+        int ReadBookByOffset(int offset);
 
 };
 
