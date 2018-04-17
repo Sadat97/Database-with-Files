@@ -78,20 +78,80 @@ void Books:: ReadBook(int offset,Book &b)
     BIfile.read(buffer, length);
 
     istrstream strbuf(buffer);
+    if (b.Book_ID[0] != '*')
+    {
+        strbuf.getline(b.Book_ID, 12, '|');
+        strbuf.getline(b.Author_ID, 29, '|');
+        strbuf.getline(b.Book_Title, 49, '|');
+        strbuf.getline(b.Book_Price,49,'|');
+
+    }
+    delete buffer;
+    BIfile.close();
+}
+
+
+void Books:: ReadBook(int offset,Book &b,int n)
+{
+    ifstream BIfile("Books.txt",ios::app);
+    BIfile.seekg(offset,ios::beg);
+
+    short length;
+    BIfile.read((char*)&length,sizeof(length));
+    char* buffer = new char[length];
+    BIfile.read(buffer, length);
+
+    istrstream strbuf(buffer);
+    if (b.Book_ID[0] != '*')
+    {
+        strbuf.getline(b.Book_ID, 12, '|');
+        strbuf.getline(b.Author_ID, 29, '|');
+        strbuf.getline(b.Book_Title, 49, '|');
+        strbuf.getline(b.Book_Price,49,'|');
+    }
+    delete buffer;
+    BIfile.close();
+}
+
+
+int Books:: ReadBookByOffset(int offset)
+{   Book b;
+    ifstream BIfile("Books.txt");
+    BIfile.seekg(0,ios::end);
+    int end_of_file = BIfile.tellg();
+
+    BIfile.seekg(offset,ios::beg);
+
+    short length;
+    BIfile.read((char*)&length,sizeof(length));
+    char* buffer = new char[length];
+    BIfile.read(buffer, length);
+
+    istrstream strbuf(buffer);
+
 
     strbuf.getline(b.Book_ID, 12, '|');
     strbuf.getline(b.Author_ID, 29, '|');
     strbuf.getline(b.Book_Title, 49, '|');
     strbuf.getline(b.Book_Price,49,'|');
 
-    cout <<"\nBook ID: "<< b.Book_ID << endl;
-    cout <<"Author ID: "<< b.Author_ID << endl;
-    cout <<"Book Title: "<< b.Book_Title<< endl;
-    cout <<"Book Price: "<< b.Book_Price<< endl<< endl;
     delete buffer;
 
+    if (b.Book_ID[0] != '*'){
+        cout <<"\nBook ID: "<< b.Book_ID << endl;
+        cout <<"Author ID: "<< b.Author_ID << endl;
+        cout <<"Book Title: "<< b.Book_Title<< endl;
+        cout <<"Book Price: "<< b.Book_Price<< endl;
+    }
+    int current = BIfile.tellg();
     BIfile.close();
+   if (current == end_of_file)
+        return -1 ;
+
+    return current;
 }
+
+
 
 
 void Books:: ReadBook()
@@ -116,10 +176,13 @@ void Books:: ReadBook()
         strbuf.getline(b.Book_Title, 49, '|');
         strbuf.getline(b.Book_Price,49,'|');
 
-        cout <<"\nBook ID: "<< b.Book_ID << endl;
-        cout <<"Author ID: "<< b.Author_ID << endl;
-        cout <<"Book Title: "<< b.Book_Title<< endl;
-        cout <<"Book Price: "<< b.Book_Price<< endl<< endl;
+        if (b.Book_ID[0] != '*')
+        {
+            cout <<"\nBook ID: "<< b.Book_ID << endl;
+            cout <<"Author ID: "<< b.Author_ID << endl;
+            cout <<"Book Title: "<< b.Book_Title<< endl;
+            cout <<"Book Price: "<< b.Book_Price<< endl<< endl;
+        }
         delete buffer;
     }
     BIfile.close();
@@ -166,9 +229,11 @@ int Books:: PIndexBinarySearch(char key[])
     while (low <= high)
     {
     int middle = (low + high) / 2;
-    if (strcmp(index[middle].PK, key) == 0)
-        return index[middle].offset;
-    else if (atoi(index[middle].PK)<atoi(key))
+    if (strcmp(index[middle].PK, key) == 0){
+
+//cout << "3la fkera dh al index " << index[middle].offset << endl ;
+        return index[middle].offset;}
+         else if (atoi(index[middle].PK)<atoi(key))
         low = middle + 1;
     else
         high = middle - 1;
@@ -184,8 +249,8 @@ int Books:: SIndexBinarySearch(char key[])
     {
     int middle = (low + high) / 2;
     if (strcmp(sindex[middle].SK, key) == 0)
-        return middle;
-    else if (atoi(sindex[middle].SK)<atoi(key))
+        return sindex[middle].offset;
+    else if (strcmp(sindex[middle].SK,key)>0)
         low = middle + 1;
     else
         high = middle - 1;
@@ -421,7 +486,7 @@ void Books::PrintBookAID()
     {
         ifstream listfile ("BooksSIndex.txt");
 
-        listfile.seekg(sindex[Idx].offset,ios::beg);
+        listfile.seekg(Idx,ios::beg);
 
         vector<string>PK;
         string t;
@@ -457,6 +522,98 @@ void Books::PrintBookAID()
     }
 
 }
+
+void Books::PrintBookAID(int Idx,Book &B)
+{
+        ifstream listfile ("BooksSIndex.txt");
+
+        listfile.seekg(Idx,ios::beg);
+
+        vector<string>PK;
+        string t;
+        int RRN;
+
+        listfile>>t>>RRN;
+        listfile.close();
+
+        listfile.open("BooksList.txt");
+        listfile.seekg(RRN,ios::beg);
+
+        listfile>>t>>RRN;
+        while (RRN != -1)
+        {
+            PK.push_back(t);
+            if (!listfile.eof())
+            {
+                listfile>>t>>RRN;
+            }
+        }
+
+        PK.push_back(t);
+
+        for (int i = 0;i<PK.size();i++)
+        {
+            char arr [PK.size()];
+            strcpy(arr,PK[i].c_str());
+            int offset = PIndexBinarySearch(arr);
+            ReadBook(offset,B,0);
+        }
+
+        listfile.close();
+}
+
+
+void Books::Queryexcuter(string * part1 , string * part2,int index){
+
+    char key[part2[1].size()];
+    char attr[part1[0].size()];
+    strcpy(key,part2[1].c_str());
+    strcpy(attr,part1[0].c_str());
+
+
+if (index == 1){
+
+    int offset = PIndexBinarySearch(key);
+     if (offset != -1){
+         Book b;
+        ReadBook(offset,b);
+        if (strcmp(attr,"all")==0)
+            cout <<"Book ID: "<<b.Book_ID<<endl<<"Author ID: "<<b.Author_ID<<endl<< "Book Title: " << b.Book_Title<<endl
+                 << "Book Price: " <<b.Book_Price << endl<<endl;
+        else if (strcmp(attr,"Book_Title") == 0)
+            cout << "Book Title : "<< b.Book_Title<<endl;
+        else if (strcmp(attr,"Book_Price") == 0)
+             cout << "Book Price : "<< b.Book_Price<<endl;
+        else if (strcmp(attr,"Book_ID") == 0)
+             cout << "Book ID : "<< b.Book_ID<<endl;
+        else if (strcmp(attr,"Author_ID") == 0)
+             cout << "Author ID : "<< b.Author_ID<<endl;
+        else
+            cout << "Wrong Query! \n";
+
+    }
+}else if (index == 2){
+int offset = SIndexBinarySearch(key);
+     if (offset != -1){
+         Book b;
+        ReadBook(offset,b);
+        if (strcmp(attr,"all")==0)
+            cout <<"Book ID: "<<b.Book_ID<<endl<<"Author ID: "<<b.Author_ID<<endl<< "Book Title: " << b.Book_Title<<endl
+                 << "Book Price: " <<b.Book_Price << endl<<endl;
+        else if (strcmp(attr,"Book_Title") == 0)
+            cout << "Book Title : "<< b.Book_Title<<endl;
+        else if (strcmp(attr,"Book_Price") == 0)
+             cout << "Book Price : "<< b.Book_Price<<endl;
+        else if (strcmp(attr,"Book_ID") == 0)
+             cout << "Book ID : "<< b.Book_ID<<endl;
+        else if (strcmp(attr,"Author_ID") == 0)
+             cout << "Author ID : "<< b.Author_ID<<endl;
+        else
+            cout << "Wrong Query! \n";
+     }
+    }
+}
+
 
 Books::~Books()
 {
