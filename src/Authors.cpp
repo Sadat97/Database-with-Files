@@ -149,7 +149,7 @@ void Authors::sortSIndex() //bubble sort
     for (int i = 0; i<len; i++)
         for (int j = 0; j<len - i; j++)
         {
-            if (atoi(sindex[j].SK)>atoi(sindex[j + 1].SK))
+            if (strcmp(sindex[j].SK,sindex[j + 1].SK) > 0)
             {
                 temp = sindex[j];
                 sindex[j] = sindex[j + 1];
@@ -183,13 +183,13 @@ int Authors:: SIndexBinarySearch(char key[])
     int low = 0, high = size - 1;
     while (low <= high)
     {
-    int middle = (low + high) / 2;
-    if (strcmp(sindex[middle].SK, key) == 0)
-        return middle;
-    else if (strcmp(sindex[middle].SK,key)>0)
-        low = middle + 1;
-    else
-        high = middle - 1;
+        int middle = (low + high) / 2;
+        if (strcmp(sindex[middle].SK, key) == 0)
+            return middle;
+        else if (strcmp(sindex[middle].SK,key)<0)
+            low = middle + 1;
+        else
+            high = middle - 1;
     }
     return -1;
 }
@@ -345,7 +345,6 @@ void Authors::saveSIndex()
             snext = SKT.size();
         }
         sindex[i].offset = sout.tellp();
-//        cout<<"Offset = "<<sindex[i].offset<<endl<<sindex[i].SK<<endl<<index[i].PK<<endl;
         sout<<SKT[i]<<' '<<ptr[i]<<endl;
     }
     lout.close();
@@ -421,7 +420,6 @@ void Authors::PrintAuthorAName()
     Author A;
     cin.getline(A.Author_Name,49);
     int Idx = SIndexBinarySearch(A.Author_Name);
-    cout<<" out "<<Idx<<endl;
     if (Idx == -1)
     {
         cout<<"Invalid Name\n\n";
