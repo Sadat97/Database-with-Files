@@ -152,8 +152,6 @@ int Books:: ReadBookByOffset(int offset)
 }
 
 
-
-
 void Books:: ReadBook()
 {
     ifstream BIfile("Books.txt",ios::app);
@@ -231,7 +229,6 @@ int Books:: PIndexBinarySearch(char key[])
     int middle = (low + high) / 2;
     if (strcmp(index[middle].PK, key) == 0){
 
-//cout << "3la fkera dh al index " << index[middle].offset << endl ;
         return index[middle].offset;}
          else if (atoi(index[middle].PK)<atoi(key))
         low = middle + 1;

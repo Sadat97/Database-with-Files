@@ -54,7 +54,7 @@ string * WhereCondition(string query){
     wherecond[1] = right;
     left  = temp.substr(0, temp.find("=") -1);
     wherecond[0] = left;
-    //cout << "this is left " << left << " And this is Right " << right << endl;
+
     return  wherecond;
 }
 
@@ -100,14 +100,6 @@ string query ;
                 string *firstpart = queryselectpart;
                 string *secondpart = wherecond;
              int index = 1;
-             if ((firstpart[2] == "") && (secondpart[0] == "NULL"))
-             {
-                 if (firstpart[1] == "Books")
-                    Bobj.ReadBook();
-                 else if (firstpart[1] == "Authors")
-                    Aobj.ReadAuthor();
-             }
-
              if ((firstpart[2] == "") && (secondpart[0] != "NULL")){
                     if (firstpart[1] == "Books"){
                             if (secondpart[0] == "Author_ID")
@@ -130,7 +122,6 @@ string query ;
                               tempA = Aobj.ReadBookByOffset(tempA);
                               tempB = Bobj.ReadBookByOffset(tempB);
                     }
-
 
              }
 
